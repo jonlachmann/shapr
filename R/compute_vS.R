@@ -144,16 +144,20 @@ compute_preds <- function(
   # Predictions
 
   if (type == "forecast") {
-    dt[, (pred_cols) := predict_model(
-      x = model,
-      newdata = .SD[, 1:n_endo],
-      newreg = .SD[, -(1:n_endo)],
-      horizon = horizon,
-      explain_idx = explain_idx[id],
-      explain_lags = explain_lags,
-      y = y,
-      xreg = xreg
-    ), .SDcols = feature_names]
+
+    dt[!duplicated(dt, by = feature_names), (pred_cols) := predict_model(
+       x = model,
+       newdata = .SD[, 1:n_endo],
+       newreg = .SD[, -(1:n_endo)],
+       horizon = horizon,
+       explain_idx = explain_idx[id],
+       explain_lags = explain_lags,
+       y = y,
+       xreg = xreg
+     ), .SDcols = feature_names]
+
+    dt[duplicated(dt, by = feature_names), (pred_cols) := dt[duplicated(dt, by = feature_names)][dt[!duplicated(dt, by = feature_names)], mget(paste0("i.", pred_cols)), on = (feature_names), nomatch = 0]]
+
   } else {
     dt[, (pred_cols) := predict_model(model, newdata = .SD), .SDcols = feature_names]
   }
