@@ -158,8 +158,7 @@ compute_preds <- function(
        xreg = xreg
      ), .SDcols = feature_names]
 
-    dt[duplicated(group), (pred_cols) := dt[duplicated(group)][dt[!duplicated(group)], mget(paste0("i.", pred_cols)), on = (feature_names), nomatch = 0]]
-
+    dt[duplicated(group), (pred_cols) := dt[duplicated(group)][dt[!duplicated(group)], mget(paste0("i.", pred_cols)), on = .(group), nomatch = 0]]
   } else {
     dt[, (pred_cols) := predict_model(model, newdata = .SD), .SDcols = feature_names]
   }
