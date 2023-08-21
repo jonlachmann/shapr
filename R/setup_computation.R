@@ -99,6 +99,13 @@ shapley_setup_forecast <- function(internal) {
     m = n_features0
   )
 
+  ## Get which features are of interest per combination
+  combination_features <- id_combination_mapper_dt[, .(id_combination, horizon)]
+  combination_features[, max_horizon := max(horizon), by = id_combination]
+  combination_features[, horizon := NULL]
+  combination_features <- combination_features[!duplicated(id_combination)]
+  combination_features[, features := horizon_features[max_horizon]]
+  combination_features[, max_horizon := NULL]
 
   #### Updating parameters ####
 
@@ -120,6 +127,7 @@ shapley_setup_forecast <- function(internal) {
 
   internal$objects$id_combination_mapper_dt <- id_combination_mapper_dt
   internal$objects$cols_per_horizon <- cols_per_horizon
+  internal$objects$combination_features <- combination_features
   internal$objects$W_list <- W_list
   internal$objects$X_list <- X_list
 

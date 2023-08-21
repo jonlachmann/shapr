@@ -128,6 +128,7 @@ prepare_data.empirical <- function(internal, index_features = NULL, ...) {
   model <- internal$tmp$model
   predict_model <- internal$tmp$predict_model
 
+  combination_features <- internal$objects$combination_features
 
   if (is.null(index_features)) {
     index_features <- X[, .I]
@@ -165,7 +166,8 @@ prepare_data.empirical <- function(internal, index_features = NULL, ...) {
         x_train = as.matrix(x_train),
         x_explain = as.matrix(x_explain[i, , drop = FALSE]),
         empirical.eta = empirical.eta,
-        n_samples = n_samples
+        n_samples = n_samples,
+        combination_features = combination_features[index_features, , drop = FALSE]
       )
 
       dt_l[[i]][, id := i]
@@ -249,7 +251,7 @@ prepare_data.empirical <- function(internal, index_features = NULL, ...) {
 #' @keywords internal
 #'
 #' @author Nikolai Sellereite
-observation_impute <- function(W_kernel, S, x_train, x_explain, empirical.eta = .7, n_samples = 1e3) {
+observation_impute <- function(W_kernel, S, x_train, x_explain, empirical.eta = .7, n_samples = 1e3, combination_features = NULL) {
   # Check input
   stopifnot(is.matrix(W_kernel) & is.matrix(S))
   stopifnot(nrow(W_kernel) == nrow(x_train))
@@ -280,6 +282,21 @@ observation_impute <- function(W_kernel, S, x_train, x_explain, empirical.eta = 
     dt_melt <- dt_melt[wcum > 1 - empirical.eta][, wcum := NULL]
   }
   dt_melt <- dt_melt[, tail(.SD, n_samples), by = "index_s"]
+
+  # If xreg variables are present when explaining a forecast, a lot of combinations will be redundant, merge them
+  if (!is.null(combination_features)) {
+    for (i in seq_along(nms_vec)) {
+      if (length(combination_features$features) == ncol(S)) { next }
+
+      if (all(combination_features[i, .(features)]$features[[1]] %in% which(S[i, ] == 1))) {
+        new_row <- dt_melt[index_s == i][1, ]
+        new_row$weight <- dt_melt[index_s == i, sum(weight)]
+        dt_melt <- dt_melt[index_s != i]
+        dt_melt <- rbindlist(list(dt_melt, new_row))
+      }
+    }
+
+  }
 
   # Generate data used for prediction
   dt_p <- observation_impute_cpp(
