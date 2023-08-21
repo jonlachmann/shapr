@@ -145,7 +145,9 @@ compute_preds <- function(
 
   if (type == "forecast") {
 
-    dt[!duplicated(dt, by = feature_names), (pred_cols) := predict_model(
+    dt[, group := .GRP, by = feature_names]
+
+    dt[!duplicated(group), (pred_cols) := predict_model(
        x = model,
        newdata = .SD[, 1:n_endo],
        newreg = .SD[, -(1:n_endo)],
@@ -156,7 +158,7 @@ compute_preds <- function(
        xreg = xreg
      ), .SDcols = feature_names]
 
-    dt[duplicated(dt, by = feature_names), (pred_cols) := dt[duplicated(dt, by = feature_names)][dt[!duplicated(dt, by = feature_names)], mget(paste0("i.", pred_cols)), on = (feature_names), nomatch = 0]]
+    dt[duplicated(group), (pred_cols) := dt[duplicated(group)][dt[!duplicated(group)], mget(paste0("i.", pred_cols)), on = (feature_names), nomatch = 0]]
 
   } else {
     dt[, (pred_cols) := predict_model(model, newdata = .SD), .SDcols = feature_names]
