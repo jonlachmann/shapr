@@ -717,7 +717,8 @@ shapley_setup_forecast <- function(internal) {
       prev_coal_samples = prev_coal_samples,
       unique_sampling = unique_sampling, # TODO: Just added temporary
       coal_feature_list = this_coal_feature_list,
-      approach0 = approach
+      approach0 = approach,
+      shapley_reweighting = FALSE
     )
 
 
