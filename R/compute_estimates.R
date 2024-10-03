@@ -29,7 +29,7 @@ compute_estimates <- function(internal, vS_list) {
 
   internal$timing_list$compute_shapley <- Sys.time()
 
-  if (compute_sd) {
+  if (compute_sd && F) {
     dt_shapley_sd <- bootstrap_shapley_new(internal, n_boot_samps = n_boot_samps, processed_vS_list$dt_vS)
   } else {
     dt_shapley_sd <- dt_shapley_est * 0
@@ -127,6 +127,7 @@ compute_shapley_new <- function(internal, dt_vS) {
     id_coalition_mapper_dt <- internal$objects$id_coalition_mapper_dt
     horizon <- internal$parameters$horizon
     cols_per_horizon <- internal$objects$cols_per_horizon
+    shap_names <- internal$parameters$shap_names
     W_list <- internal$objects$W_list
 
     kshap_list <- list()
