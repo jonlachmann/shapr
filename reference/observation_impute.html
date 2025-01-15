@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -75,7 +78,7 @@
 <span>  <span class="va">x_train</span>,</span>
 <span>  <span class="va">x_explain</span>,</span>
 <span>  empirical.eta <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>  n_samples <span class="op">=</span> <span class="fl">1000</span></span>
+<span>  n_MC_samples <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -85,27 +88,22 @@
 
 <dl><dt id="arg-w-kernel">W_kernel<a class="anchor" aria-label="anchor" href="#arg-w-kernel"></a></dt>
 <dd><p>Numeric matrix. Contains all nonscaled weights between training and test
-observations for all feature combinations. The dimension equals <code>n_train x m</code>.</p></dd>
+observations for all coalitions. The dimension equals <code>n_train x m</code>.</p></dd>
 
 
 <dt id="arg-s">S<a class="anchor" aria-label="anchor" href="#arg-s"></a></dt>
-<dd><p>Integer matrix of dimension <code>n_combinations x m</code>, where <code>n_combinations</code>
-and <code>m</code> equals the total number of sampled/non-sampled feature combinations and
+<dd><p>Integer matrix of dimension <code>n_coalitions x m</code>, where <code>n_coalitions</code>
+and <code>m</code> equals the total number of sampled/non-sampled coalitions and
 the total number of unique features, respectively. Note that <code>m = ncol(x_train)</code>.</p></dd>
 
 
 <dt id="arg-x-train">x_train<a class="anchor" aria-label="anchor" href="#arg-x-train"></a></dt>
-<dd><p>Numeric matrix</p></dd>
+<dd><p>Data.table with training data.</p></dd>
 
 
 <dt id="arg-x-explain">x_explain<a class="anchor" aria-label="anchor" href="#arg-x-explain"></a></dt>
-<dd><p>Numeric matrix</p></dd>
-
-
-<dt id="arg-n-samples">n_samples<a class="anchor" aria-label="anchor" href="#arg-n-samples"></a></dt>
-<dd><p>Positive integer.
-Indicating the maximum number of samples to use in the
-Monte Carlo integration for every conditional expectation. See also details.</p></dd>
+<dd><p>Data.table with the features of the observation whose
+predictions ought to be explained (test data).</p></dd>
 
 </dl></div>
     <div id="value">
@@ -125,7 +123,7 @@ Monte Carlo integration for every conditional expectation. See also details.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -69,7 +72,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">regression.cv_message</span><span class="op">(</span><span class="va">regression.results</span>, <span class="va">regression.grid</span>, n_cv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">regression.cv_message</span><span class="op">(</span></span>
+<span>  <span class="va">regression.results</span>,</span>
+<span>  <span class="va">regression.grid</span>,</span>
+<span>  n_cv <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  <span class="va">current_comb</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,6 +95,10 @@
 <dt id="arg-n-cv">n_cv<a class="anchor" aria-label="anchor" href="#arg-n-cv"></a></dt>
 <dd><p>Integer (default is 10) specifying the number of CV hyperparameter configurations to print.</p></dd>
 
+
+<dt id="arg-current-comb">current_comb<a class="anchor" aria-label="anchor" href="#arg-current-comb"></a></dt>
+<dd><p>Integer vector. The current combination of features, passed to verbosity printing function.</p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -101,7 +113,7 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

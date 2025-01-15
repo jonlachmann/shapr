@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -77,34 +80,36 @@
 
 
 <dl><dt id="arg-mc-samples-mat">MC_samples_mat<a class="anchor" aria-label="anchor" href="#arg-mc-samples-mat"></a></dt>
-<dd><p>arma::mat. Matrix of dimension (<code>n_samples</code>, <code>n_features</code>) containing samples from the
-univariate standard normal.</p></dd>
+<dd><p>arma::mat.
+Matrix of dimension (<code>n_MC_samples</code>, <code>n_features</code>) containing samples from the univariate standard normal.</p></dd>
 
 
 <dt id="arg-x-explain-mat">x_explain_mat<a class="anchor" aria-label="anchor" href="#arg-x-explain-mat"></a></dt>
-<dd><p>arma::mat. Matrix of dimension (<code>n_explain</code>, <code>n_features</code>) containing the observations
-to explain.</p></dd>
+<dd><p>arma::mat.
+Matrix of dimension (<code>n_explain</code>, <code>n_features</code>) containing the observations to explain.</p></dd>
 
 
 <dt id="arg-s">S<a class="anchor" aria-label="anchor" href="#arg-s"></a></dt>
-<dd><p>arma::mat. Matrix of dimension (<code>n_combinations</code>, <code>n_features</code>) containing binary representations of
-the used coalitions. S cannot contain the empty or grand coalition, i.e., a row containing only zeros or ones.
-This is not a problem internally in shapr as the empty and grand coalitions treated differently.</p></dd>
+<dd><p>arma::mat.
+Matrix of dimension (<code>n_coalitions</code>, <code>n_features</code>) containing binary representations of the used coalitions.
+S cannot contain the empty or grand coalition, i.e., a row containing only zeros or ones.
+This is not a problem internally in shapr as the empty and grand coalitions are treated differently.</p></dd>
 
 
 <dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
-<dd><p>arma::vec. Vector of length <code>n_features</code> containing the mean of each feature.</p></dd>
+<dd><p>arma::vec.
+Vector of length <code>n_features</code> containing the mean of each feature.</p></dd>
 
 
 <dt id="arg-cov-mat">cov_mat<a class="anchor" aria-label="anchor" href="#arg-cov-mat"></a></dt>
-<dd><p>arma::mat. Matrix of dimension (<code>n_features</code>, <code>n_features</code>) containing the pairwise covariance
-between all pairs of features.</p></dd>
+<dd><p>arma::mat.
+Matrix of dimension (<code>n_features</code>, <code>n_features</code>) containing the covariance matrix of the features.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An arma::cube/3D array of dimension (<code>n_samples</code>, <code>n_explain</code> * <code>n_coalitions</code>, <code>n_features</code>), where
-the columns (<em>,j,</em>) are matrices of dimension (<code>n_samples</code>, <code>n_features</code>) containing the conditional Gaussian
+    <p>An arma::cube/3D array of dimension (<code>n_MC_samples</code>, <code>n_explain</code> * <code>n_coalitions</code>, <code>n_features</code>), where
+the columns (<em>,j,</em>) are matrices of dimension (<code>n_MC_samples</code>, <code>n_features</code>) containing the conditional Gaussian
 MC samples for each explicand and coalition.</p>
     </div>
     <div id="author">
@@ -120,7 +125,7 @@ MC samples for each explicand and coalition.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -60,7 +63,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate weighted matrix</h1>
-    <small class="dont-index">Source: <a href="https://github.com/NorskRegnesentral/shapr/blob/master/R/setup_computation.R" class="external-link"><code>R/setup_computation.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/NorskRegnesentral/shapr/blob/master/R/shapley_setup.R" class="external-link"><code>R/shapley_setup.R</code></a></small>
     <div class="hidden name"><code>weight_matrix.Rd</code></div>
     </div>
 
@@ -69,7 +72,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">weight_matrix</span><span class="op">(</span><span class="va">X</span>, normalize_W_weights <span class="op">=</span> <span class="cn">TRUE</span>, is_groupwise <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">weight_matrix</span><span class="op">(</span><span class="va">X</span>, normalize_W_weights <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -77,17 +80,14 @@
 
 
 <dl><dt id="arg-x">X<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>data.table</p></dd>
+<dd><p>data.table.
+Output from <code><a href="create_coalition_table.html">create_coalition_table()</a></code>.</p></dd>
 
 
 <dt id="arg-normalize-w-weights">normalize_W_weights<a class="anchor" aria-label="anchor" href="#arg-normalize-w-weights"></a></dt>
-<dd><p>Logical. Whether to normalize the weights for the combinations to sum to 1 for
-increased numerical stability before solving the WLS (weighted least squares). Applies to all combinations
-except combination <code>1</code> and <code>2^m</code>.</p></dd>
-
-
-<dt id="arg-is-groupwise">is_groupwise<a class="anchor" aria-label="anchor" href="#arg-is-groupwise"></a></dt>
-<dd><p>Logical. Indicating whether group wise Shapley values are to be computed.</p></dd>
+<dd><p>Logical. Whether to normalize the weights for the coalitions to sum to 1 for
+increased numerical stability before solving the WLS (weighted least squares). Applies to all coalitions
+except coalition <code>1</code> and <code>2^m</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -107,7 +107,7 @@ except combination <code>1</code> and <code>2^m</code>.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -69,30 +72,32 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">weight_matrix_cpp</span><span class="op">(</span><span class="va">subsets</span>, <span class="va">m</span>, <span class="va">n</span>, <span class="va">w</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">weight_matrix_cpp</span><span class="op">(</span><span class="va">coalitions</span>, <span class="va">m</span>, <span class="va">n</span>, <span class="va">w</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-subsets">subsets<a class="anchor" aria-label="anchor" href="#arg-subsets"></a></dt>
-<dd><p>List. Each of the elements equals an integer
-vector representing a valid combination of features/feature groups.</p></dd>
+<dl><dt id="arg-coalitions">coalitions<a class="anchor" aria-label="anchor" href="#arg-coalitions"></a></dt>
+<dd><p>List.
+Each of the elements equals an integer vector representing a valid combination of features/feature groups.</p></dd>
 
 
 <dt id="arg-m">m<a class="anchor" aria-label="anchor" href="#arg-m"></a></dt>
-<dd><p>Integer. Number of features/feature groups</p></dd>
+<dd><p>Integer.
+Number of features/feature groups.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
-<dd><p>Integer. Number of combinations</p></dd>
+<dd><p>Integer.
+Number of combinations.</p></dd>
 
 
 <dt id="arg-w">w<a class="anchor" aria-label="anchor" href="#arg-w"></a></dt>
-<dd><p>Numeric vector of length <code>n</code>, i.e. <code>w[i]</code> equals
-the Shapley weight of feature/feature group combination <code>i</code>, represented by
-<code>subsets[[i]]</code>.</p></dd>
+<dd><p>Numeric vector
+Should have length <code>n</code>. <code>w[i]</code> equals the Shapley weight of feature/feature group combination <code>i</code>,
+represented by <code>coalitions[[i]]</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -101,7 +106,7 @@ the Shapley weight of feature/feature group combination <code>i</code>, represen
     </div>
     <div id="author">
     <h2>Author</h2>
-    <p>Nikolai Sellereite</p>
+    <p>Nikolai Sellereite, Martin Jullum</p>
     </div>
 
   </div>
@@ -112,7 +117,7 @@ the Shapley weight of feature/feature group combination <code>i</code>, represen
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

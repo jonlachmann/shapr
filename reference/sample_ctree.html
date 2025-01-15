@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -69,7 +72,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sample_ctree</span><span class="op">(</span><span class="va">tree</span>, <span class="va">n_samples</span>, <span class="va">x_explain</span>, <span class="va">x_train</span>, <span class="va">n_features</span>, <span class="va">sample</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sample_ctree</span><span class="op">(</span><span class="va">tree</span>, <span class="va">n_MC_samples</span>, <span class="va">x_explain</span>, <span class="va">x_train</span>, <span class="va">n_features</span>, <span class="va">sample</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,32 +84,33 @@
 Also contains given_ind, the features to condition upon.</p></dd>
 
 
-<dt id="arg-n-samples">n_samples<a class="anchor" aria-label="anchor" href="#arg-n-samples"></a></dt>
-<dd><p>Numeric. Indicates how many samples to use for MCMC.</p></dd>
+<dt id="arg-n-mc-samples">n_MC_samples<a class="anchor" aria-label="anchor" href="#arg-n-mc-samples"></a></dt>
+<dd><p>Scalar integer.
+Corresponds to the number of samples from the leaf node.
+See an exception when sample = FALSE in <code><a href="setup_approach.html">setup_approach.ctree()</a></code>.</p></dd>
 
 
 <dt id="arg-x-explain">x_explain<a class="anchor" aria-label="anchor" href="#arg-x-explain"></a></dt>
-<dd><p>Matrix, data.frame or data.table with the features of the observation whose
-predictions ought to be explained (test data). Dimension <code>1\timesp</code> or <code>p\times1</code>.</p></dd>
+<dd><p>Data.table with the features of the observation whose
+predictions ought to be explained (test data).</p></dd>
 
 
 <dt id="arg-x-train">x_train<a class="anchor" aria-label="anchor" href="#arg-x-train"></a></dt>
-<dd><p>Matrix, data.frame or data.table with training data.</p></dd>
+<dd><p>Data.table with training data.</p></dd>
 
 
 <dt id="arg-n-features">n_features<a class="anchor" aria-label="anchor" href="#arg-n-features"></a></dt>
-<dd><p>Positive integer. The number of features.</p></dd>
-
-
-<dt id="arg-sample">sample<a class="anchor" aria-label="anchor" href="#arg-sample"></a></dt>
-<dd><p>Boolean. True indicates that the method samples from the terminal node
-of the tree whereas False indicates that the method takes all the observations if it is
-less than n_samples.</p></dd>
+<dd><p>Positive integer.
+The number of features.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>data.table with <code>n_samples</code> (conditional) Gaussian samples</p>
+    <p>data.table with <code>n_MC_samples</code> (conditional) Gaussian samples</p>
+    </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>See the documentation of the <code><a href="setup_approach.html">setup_approach.ctree()</a></code> function for undocumented parameters.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -121,7 +125,7 @@ less than n_samples.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -71,12 +74,12 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vaeac_impute_missing_entries</span><span class="op">(</span></span>
 <span>  <span class="va">x_explain_with_NaNs</span>,</span>
-<span>  <span class="va">n_samples</span>,</span>
+<span>  <span class="va">n_MC_samples</span>,</span>
 <span>  <span class="va">vaeac_model</span>,</span>
 <span>  <span class="va">checkpoint</span>,</span>
 <span>  <span class="va">sampler</span>,</span>
 <span>  <span class="va">batch_size</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_explain <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  index_features <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -91,7 +94,7 @@
 <dd><p>A 2D matrix, where the missing entries to impute are represented by <code>NaN</code>.</p></dd>
 
 
-<dt id="arg-n-samples">n_samples<a class="anchor" aria-label="anchor" href="#arg-n-samples"></a></dt>
+<dt id="arg-n-mc-samples">n_MC_samples<a class="anchor" aria-label="anchor" href="#arg-n-mc-samples"></a></dt>
 <dd><p>Integer. The number of imputed versions we create for each row in <code>x_explain_with_NaNs</code>.</p></dd>
 
 
@@ -113,8 +116,20 @@ during the training of the vaeac model. Used in <code><a href="https://rdrr.io/p
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Boolean. An integer specifying the level of verbosity. Use <code>0</code> (default) for no verbosity,
-<code>1</code> for low verbose, and <code>2</code> for high verbose.</p></dd>
+<dd><p>String vector or NULL.
+Specifies the verbosity (printout detail level) through one or more of strings <code>"basic"</code>, <code>"progress"</code>,
+<code>"convergence"</code>, <code>"shapley"</code> and <code>"vS_details"</code>.
+<code>"basic"</code> (default) displays basic information about the computation which is being performed.
+<code>"progress</code> displays information about where in the calculation process the function currently is.
+#' <code>"convergence"</code> displays information on how close to convergence the Shapley value estimates are
+(only when <code>iterative = TRUE</code>) .
+<code>"shapley"</code> displays intermediate Shapley value estimates and standard deviations (only when <code>iterative = TRUE</code>)</p><ul><li><p>the final estimates.
+<code>"vS_details"</code> displays information about the v_S estimates.
+This is most relevant for <code>approach %in% c("regression_separate", "regression_surrogate", "vaeac"</code>).
+<code>NULL</code> means no printout.
+Note that any combination of four strings can be used.
+E.g. <code>verbose = c("basic", "vS_details")</code> will display basic information + details about the v(S)-estimation process.</p></li>
+</ul></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
@@ -132,7 +147,8 @@ based code is being run.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.table where the missing values (<code>NaN</code>) in <code>x_explain_with_NaNs</code> have been imputed <code>n_samples</code> times.
+    <p>A data.table where the missing values (<code>NaN</code>) in <code>x_explain_with_NaNs</code> have been imputed <code>n_MC_samples</code>
+times.
 The data table will contain extra id columns if <code>index_features</code> and <code>n_explain</code> are provided.</p>
     </div>
     <div id="details">
@@ -153,7 +169,7 @@ The values are sampled from the conditional distribution estimated by a vaeac mo
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

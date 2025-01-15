@@ -18,7 +18,7 @@ See tidymodels for default model hyperparameters."><!-- mathjax --><script src="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -30,13 +30,16 @@ See tidymodels for default model hyperparameters."><!-- mathjax --><script src="
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -92,8 +95,8 @@ is also a valid input. It is essential to include the package prefix if the pack
 The data.frame must contain the possible hyperparameter value combinations to try.
 The column names must match the names of the tuneable parameters specified in <code>regression.model</code>.
 If <code>regression.tune_values</code> is a function, then it should take one argument <code>x</code> which is the training data
-for the current combination/coalition and returns a data.frame/data.table/tibble with the properties described above.
-Using a function allows the hyperparameter values to change based on the size of the combination. See the regression
+for the current coalition and returns a data.frame/data.table/tibble with the properties described above.
+Using a function allows the hyperparameter values to change based on the size of the coalition See the regression
 vignette for several examples.
 Note, to make it easier to call <code><a href="explain.html">explain()</a></code> from Python, the <code>regression.tune_values</code> can also be a string
 containing an R function. For example,
@@ -102,9 +105,7 @@ It is essential to include the package prefix if the package is not loaded.</p><
 
 
 <dt id="arg-x-train">x_train<a class="anchor" aria-label="anchor" href="#arg-x-train"></a></dt>
-<dd><p>Matrix or data.frame/data.table.
-Contains the data used to estimate the (conditional) distributions for the features
-needed to properly estimate the conditional expectations in the Shapley formula.</p></dd>
+<dd><p>Data.table with training data.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -124,7 +125,7 @@ needed to properly estimate the conditional expectations in the Shapley formula.
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

@@ -18,7 +18,7 @@ for approach = "vaeac".'><!-- mathjax --><script src="https://cdnjs.cloudflare.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -30,13 +30,16 @@ for approach = "vaeac".'><!-- mathjax --><script src="https://cdnjs.cloudflare.c
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -170,9 +173,10 @@ during the training of the vaeac model. Used in <code><a href="https://rdrr.io/p
 <dt id="arg-vaeac-batch-size-sampling">vaeac.batch_size_sampling<a class="anchor" aria-label="anchor" href="#arg-vaeac-batch-size-sampling"></a></dt>
 <dd><p>Positive integer (default is <code>NULL</code>) The number of samples to include in
 each batch when generating the Monte Carlo samples. If <code>NULL</code>, then the function generates the Monte Carlo samples
-for the provided coalitions/combinations and all explicands sent to <code><a href="explain.html">explain()</a></code> at the time.
-The number of coalitions are determined by <code>n_batches</code> in <code><a href="explain.html">explain()</a></code>. We recommend to tweak <code>n_batches</code>
-rather  than <code>vaeac.batch_size_sampling</code>. Larger batch sizes are often much faster provided sufficient memory.</p></dd>
+for the provided coalitions and all explicands sent to <code><a href="explain.html">explain()</a></code> at the time.
+The number of coalitions are determined by the <code>n_batches</code> used by <code><a href="explain.html">explain()</a></code>. We recommend to tweak
+<code>extra_computation_args$max_batch_size</code> and <code>extra_computation_args$min_n_batches</code>
+rather than <code>vaeac.batch_size_sampling</code>. Larger batch sizes are often much faster provided sufficient memory.</p></dd>
 
 
 <dt id="arg-vaeac-running-avg-n-values">vaeac.running_avg_n_values<a class="anchor" aria-label="anchor" href="#arg-vaeac-running-avg-n-values"></a></dt>
@@ -218,8 +222,8 @@ model can do arbitrary conditioning as all coalitions will be trained. <code>vae
 <dt id="arg-vaeac-mask-gen-coalitions">vaeac.mask_gen_coalitions<a class="anchor" aria-label="anchor" href="#arg-vaeac-mask-gen-coalitions"></a></dt>
 <dd><p>Matrix (default is <code>NULL</code>). Matrix containing the coalitions that the
 <code>vaeac</code> model will be trained on, see <code><a href="specified_masks_mask_generator.html">specified_masks_mask_generator()</a></code>. This parameter is used internally
-in <code>shapr</code> when we only consider a subset of coalitions/combinations, i.e., when
-<code>n_combinations</code> \(&lt; 2^{n_{\text{features}}}\), and for group Shapley, i.e.,
+in <code>shapr</code> when we only consider a subset of coalitions, i.e., when
+<code>n_coalitions</code> \(&lt; 2^{n_{\text{features}}}\), and for group Shapley, i.e.,
 when <code>group</code> is specified in <code><a href="explain.html">explain()</a></code>.</p></dd>
 
 
@@ -292,6 +296,13 @@ We use the <code>vaeac</code> method at the epoch with the lowest validation err
 other possibilities are available but setting the <code>vaeac.which_vaeac_model</code> parameter. See
 <a href="https://www.jmlr.org/papers/volume23/21-1413/21-1413.pdf" class="external-link">Olsen et al. (2022)</a> for more details.</p>
     </div>
+    <div id="references">
+    <h2>References</h2>
+
+<ul><li><p><a href="https://www.jmlr.org/papers/volume23/21-1413/21-1413.pdf" class="external-link">
+Olsen, L. H., Glad, I. K., Jullum, M., &amp; Aas, K. (2022). Using Shapley values and variational autoencoders to
+explain predictive models with dependent mixed features. Journal of machine learning research, 23(213), 1-51</a></p></li>
+</ul></div>
     <div id="author">
     <h2>Author</h2>
     <p>Lars Henry Berge Olsen</p>
@@ -305,7 +316,7 @@ other possibilities are available but setting the <code>vaeac.which_vaeac_model<
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

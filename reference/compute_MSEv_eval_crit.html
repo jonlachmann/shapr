@@ -19,7 +19,7 @@ Olsen et al. (2022)."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -31,13 +31,16 @@ Olsen et al. (2022)."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -68,7 +71,7 @@ Olsen et al. (2022)."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
 
     <div class="ref-description">
     <p>Function that computes the Mean Squared Error (MSEv) of the contribution function
-v(s) as proposed by <a href="https://arxiv.org/pdf/2006.01272.pdf" class="external-link">Frye et al. (2019)</a> and used by
+v(s) as proposed by <a href="https://arxiv.org/pdf/2006.01272" class="external-link">Frye et al. (2019)</a> and used by
 <a href="https://www.jmlr.org/papers/volume23/21-1413/21-1413.pdf" class="external-link">Olsen et al. (2022)</a>.</p>
     </div>
 
@@ -88,49 +91,51 @@ v(s) as proposed by <a href="https://arxiv.org/pdf/2006.01272.pdf" class="extern
 <dl><dt id="arg-internal">internal<a class="anchor" aria-label="anchor" href="#arg-internal"></a></dt>
 <dd><p>List.
 Holds all parameters, data, functions and computed objects used within <code><a href="explain.html">explain()</a></code>
-The list contains one or more of the elements <code>parameters</code>, <code>data</code>, <code>objects</code>, <code>output</code>.</p></dd>
+The list contains one or more of the elements <code>parameters</code>, <code>data</code>, <code>objects</code>, <code>iter_list</code>, <code>timing_list</code>,
+<code>main_timing_list</code>, <code>output</code>, and <code>iter_timing_list</code>.</p></dd>
 
 
 <dt id="arg-dt-vs">dt_vS<a class="anchor" aria-label="anchor" href="#arg-dt-vs"></a></dt>
-<dd><p>Data.table of dimension <code>n_combinations</code> times <code>n_explain + 1</code> containing the contribution function
-estimates. The first column is assumed to be named <code>id_combination</code> and containing the ids of the combinations.
-The last row is assumed to be the full combination, i.e., it contains the predicted responses for the observations
+<dd><p>Data.table of dimension <code>n_coalitions</code> times <code>n_explain + 1</code> containing the contribution function
+estimates. The first column is assumed to be named <code>id_coalition</code> and containing the ids of the coalitions.
+The last row is assumed to be the full coalition, i.e., it contains the predicted responses for the observations
 which are to be explained.</p></dd>
 
 
 <dt id="arg-msev-uniform-comb-weights">MSEv_uniform_comb_weights<a class="anchor" aria-label="anchor" href="#arg-msev-uniform-comb-weights"></a></dt>
-<dd><p>Logical. If <code>TRUE</code> (default), then the function weights the combinations
-uniformly when computing the MSEv criterion. If <code>FALSE</code>, then the function use the Shapley kernel weights to
-weight the combinations when computing the MSEv criterion. Note that the Shapley kernel weights are replaced by the
-sampling frequency when not all combinations are considered.</p></dd>
+<dd><p>Logical.
+If <code>TRUE</code> (default), then the function weights the coalitions uniformly when computing the MSEv criterion.
+If <code>FALSE</code>, then the function use the Shapley kernel weights to weight the coalitions when computing the MSEv
+criterion.
+Note that the Shapley kernel weights are replaced by the sampling frequency when not all coalitions are considered.</p></dd>
 
 
 <dt id="arg-msev-skip-empty-full-comb">MSEv_skip_empty_full_comb<a class="anchor" aria-label="anchor" href="#arg-msev-skip-empty-full-comb"></a></dt>
 <dd><p>Logical. If <code>TRUE</code> (default), we exclude the empty and grand
-combinations/coalitions when computing the MSEv evaluation criterion. This is reasonable as they are identical
+coalitions when computing the MSEv evaluation criterion. This is reasonable as they are identical
 for all methods, i.e., their contribution function is independent of the used method as they are special cases not
-effected by the used method. If <code>FALSE</code>, we include the empty and grand combinations/coalitions. In this situation,
+effected by the used method. If <code>FALSE</code>, we include the empty and grand coalitions. In this situation,
 we also recommend setting <code>MSEv_uniform_comb_weights = TRUE</code>, as otherwise the large weights for the empty and
-grand combinations/coalitions will outweigh all other combinations and make the MSEv criterion uninformative.</p></dd>
+grand coalitions will outweigh all other coalitions and make the MSEv criterion uninformative.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>List containing:</p><dl><dt><code>MSEv</code></dt>
-<dd><p>A <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></code> with the overall MSEv evaluation criterion averaged
-over both the combinations/coalitions and observations/explicands. The <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></code>
-also contains the standard deviation of the MSEv values for each explicand (only averaged over the combinations)
+<dd><p>A <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></code> with the overall MSEv evaluation criterion averaged
+over both the coalitions and observations/explicands. The <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></code>
+also contains the standard deviation of the MSEv values for each explicand (only averaged over the coalitions)
 divided by the square root of the number of explicands.</p></dd>
 
 <dt><code>MSEv_explicand</code></dt>
-<dd><p>A <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></code> with the mean squared error for each
-explicand, i.e., only averaged over the combinations/coalitions.</p></dd>
+<dd><p>A <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></code> with the mean squared error for each
+explicand, i.e., only averaged over the coalitions.</p></dd>
 
-<dt><code>MSEv_combination</code></dt>
-<dd><p>A <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></code> with the mean squared error for each
-combination/coalition, i.e., only averaged over the explicands/observations.
-The <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></code> also contains the standard deviation of the MSEv values for
-each combination divided by the square root of the number of explicands.</p></dd>
+<dt><code>MSEv_coalition</code></dt>
+<dd><p>A <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></code> with the mean squared error for each
+coalition, i.e., only averaged over the explicands/observations.
+The <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></code> also contains the standard deviation of the MSEv values for
+each coalition divided by the square root of the number of explicands.</p></dd>
 
 
 </dl></div>
@@ -139,11 +144,25 @@ each combination divided by the square root of the number of explicands.</p></dd
     <p>The MSEv evaluation criterion does not rely on access to the true contribution functions nor the
 true Shapley values to be computed. A lower value indicates better approximations, however, the
 scale and magnitude of the MSEv criterion is not directly interpretable in regard to the precision
-of the final estimated Shapley values. <a href="https://arxiv.org/pdf/2305.09536.pdf" class="external-link">Olsen et al. (2022)</a>
+of the final estimated Shapley values.
+<a href="https://link.springer.com/content/pdf/10.1007/s10618-024-01016-z.pdf" class="external-link">Olsen et al. (2024)</a>
 illustrates in Figure 11 a fairly strong linear relationship between the MSEv criterion and the
 MAE between the estimated and true Shapley values in a simulation study. Note that explicands
 refer to the observations whose predictions we are to explain.</p>
     </div>
+    <div id="references">
+    <h2>References</h2>
+
+<ul><li><p><a href="https://arxiv.org/pdf/2006.01272" class="external-link">
+Frye, C., de Mijolla, D., Begley, T., Cowton, L., Stanley, M., &amp; Feige, I. (2021).
+Shapley explainability on the data manifold. In International Conference on Learning Representations.</a></p></li>
+<li><p><a href="https://www.jmlr.org/papers/volume23/21-1413/21-1413.pdf" class="external-link">
+Olsen, L. H., Glad, I. K., Jullum, M., &amp; Aas, K. (2022). Using Shapley values and variational autoencoders to
+explain predictive models with dependent mixed features. Journal of machine learning research, 23(213), 1-51</a></p></li>
+<li><p><a href="https://link.springer.com/content/pdf/10.1007/s10618-024-01016-z.pdf" class="external-link">
+Olsen, L. H. B., Glad, I. K., Jullum, M., &amp; Aas, K. (2024). A comparative study of methods for estimating
+model-agnostic Shapley value explanations. Data Mining and Knowledge Discovery, 1-48</a></p></li>
+</ul></div>
     <div id="author">
     <h2>Author</h2>
     <p>Lars Henry Berge Olsen</p>
@@ -157,7 +176,7 @@ refer to the observations whose predictions we are to explain.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -29,13 +29,16 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -76,7 +79,7 @@
 <span>  index_features <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  augment_masks_as_factor <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  augment_include_grand <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  augment_add_id_comb <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  augment_add_id_coal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  augment_comb_prob <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  augment_weights <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -89,12 +92,12 @@
 <dl><dt id="arg-internal">internal<a class="anchor" aria-label="anchor" href="#arg-internal"></a></dt>
 <dd><p>List.
 Holds all parameters, data, functions and computed objects used within <code><a href="explain.html">explain()</a></code>
-The list contains one or more of the elements <code>parameters</code>, <code>data</code>, <code>objects</code>, <code>output</code>.</p></dd>
+The list contains one or more of the elements <code>parameters</code>, <code>data</code>, <code>objects</code>, <code>iter_list</code>, <code>timing_list</code>,
+<code>main_timing_list</code>, <code>output</code>, and <code>iter_timing_list</code>.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Data.table containing the data. Either the training data or the explicands. If <code>x</code> is the explicands,
-then <code>index_features</code> must be provided.</p></dd>
+<dd><p>Data.table containing the training data.</p></dd>
 
 
 <dt id="arg-y-hat">y_hat<a class="anchor" aria-label="anchor" href="#arg-y-hat"></a></dt>
@@ -114,26 +117,26 @@ to factors. If <code>FALSE</code>, then the binary masks are numerics.</p></dd>
 <dt id="arg-augment-include-grand">augment_include_grand<a class="anchor" aria-label="anchor" href="#arg-augment-include-grand"></a></dt>
 <dd><p>Logical (default is <code>FALSE</code>). If <code>TRUE</code>, then the grand coalition is included.
 If <code>index_features</code> are provided, then <code>augment_include_grand</code> has no effect. Note that if we sample the
-combinations then the grand coalition is equally likely to be samples as the other coalitions (or weighted if
+coalitions then the grand coalition is equally likely to be samples as the other coalitions (or weighted if
 <code>augment_comb_prob</code> is provided).</p></dd>
 
 
-<dt id="arg-augment-add-id-comb">augment_add_id_comb<a class="anchor" aria-label="anchor" href="#arg-augment-add-id-comb"></a></dt>
+<dt id="arg-augment-add-id-coal">augment_add_id_coal<a class="anchor" aria-label="anchor" href="#arg-augment-add-id-coal"></a></dt>
 <dd><p>Logical (default is <code>FALSE</code>). If <code>TRUE</code>, an additional column is adding containing
 which coalition was applied.</p></dd>
 
 
 <dt id="arg-augment-comb-prob">augment_comb_prob<a class="anchor" aria-label="anchor" href="#arg-augment-comb-prob"></a></dt>
 <dd><p>Array of numerics (default is <code>NULL</code>). The length of the array must match the number of
-combinations being considered, where each entry specifies the probability of sampling the corresponding coalition.
+coalitions being considered, where each entry specifies the probability of sampling the corresponding coalition.
 This is useful if we want to generate more training data for some specific coalitions. One possible choice would be
-<code>augment_comb_prob = if (use_Shapley_weights) internal$objects$X$shapley_weight[2:actual_n_combinations] else NULL</code>.</p></dd>
+<code>augment_comb_prob = if (use_Shapley_weights) internal$objects$X$shapley_weight[2:actual_n_coalitions] else NULL</code>.</p></dd>
 
 
 <dt id="arg-augment-weights">augment_weights<a class="anchor" aria-label="anchor" href="#arg-augment-weights"></a></dt>
 <dd><p>String (optional). Specifying which type of weights to add to the observations.
 If <code>NULL</code> (default), then no weights are added. If <code>"Shapley"</code>, then the Shapley weights for the different
-combinations are added to corresponding observations where the coalitions was applied. If <code>uniform</code>, then
+coalitions are added to corresponding observations where the coalitions was applied. If <code>uniform</code>, then
 all observations get an equal weight of one.</p></dd>
 
 </dl></div>
@@ -154,7 +157,7 @@ all observations get an equal weight of one.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

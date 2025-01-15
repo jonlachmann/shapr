@@ -20,7 +20,7 @@ with lowest VLB, IWAE, running IWAE, and the epochs according to save_every_nth_
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -32,13 +32,16 @@ with lowest VLB, IWAE, running IWAE, and the epochs according to save_every_nth_
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -131,8 +134,20 @@ when we compute the running means of the IWAE criterion.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Boolean. An integer specifying the level of verbosity. Use <code>0</code> (default) for no verbosity,
-<code>1</code> for low verbose, and <code>2</code> for high verbose.</p></dd>
+<dd><p>String vector or NULL.
+Specifies the verbosity (printout detail level) through one or more of strings <code>"basic"</code>, <code>"progress"</code>,
+<code>"convergence"</code>, <code>"shapley"</code> and <code>"vS_details"</code>.
+<code>"basic"</code> (default) displays basic information about the computation which is being performed.
+<code>"progress</code> displays information about where in the calculation process the function currently is.
+#' <code>"convergence"</code> displays information on how close to convergence the Shapley value estimates are
+(only when <code>iterative = TRUE</code>) .
+<code>"shapley"</code> displays intermediate Shapley value estimates and standard deviations (only when <code>iterative = TRUE</code>)</p><ul><li><p>the final estimates.
+<code>"vS_details"</code> displays information about the v_S estimates.
+This is most relevant for <code>approach %in% c("regression_separate", "regression_surrogate", "vaeac"</code>).
+<code>NULL</code> means no printout.
+Note that any combination of four strings can be used.
+E.g. <code>verbose = c("basic", "vS_details")</code> will display basic information + details about the v(S)-estimation process.</p></li>
+</ul></dd>
 
 
 <dt id="arg-cuda">cuda<a class="anchor" aria-label="anchor" href="#arg-cuda"></a></dt>
@@ -220,7 +235,7 @@ a list of where the <code>vaeac</code> models are stored on disk and the paramet
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">

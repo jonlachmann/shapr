@@ -18,7 +18,7 @@ This function allows for cross validating the hyperparameters of the model."><!-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shapr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9200</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -30,13 +30,16 @@ This function allows for cross validating the hyperparameters of the model."><!-
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/understanding_shapr.html">General usage of shapr</a>
+      <a href="../articles/general_usage.html">General usage of shapr</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_vaeac.html">Advanced usage of the `vaeac` approach</a>
+      <a href="../articles/vaeac.html">Advanced usage of the `vaeac` approach</a>
     </li>
     <li>
-      <a href="../articles/understanding_shapr_regression.html">The separate and surrogate regression approches</a>
+      <a href="../articles/regression.html">The separate and surrogate regression approches</a>
+    </li>
+    <li>
+      <a href="../articles/asymmetric_causal.html">Asymmetric and Causal Shapley values</a>
     </li>
   </ul></li>
 <li>
@@ -74,14 +77,15 @@ This function allows for cross validating the hyperparameters of the model.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">regression.train_model</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  regression.model <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  regression.tune <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  regression.tune_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  regression.vfold_cv_para <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  regression.recipe_func <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  regression.response_var <span class="op">=</span> <span class="st">"y_hat"</span>,</span>
-<span>  regression.surrogate_n_comb <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  regression.surrogate_n_comb <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  current_comb <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -90,21 +94,30 @@ This function allows for cross validating the hyperparameters of the model.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Data.table containing the data. Either the training data or the explicands. If <code>x</code> is the explicands,
-then <code>index_features</code> must be provided.</p></dd>
+<dd><p>Data.table containing the training data.</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>Positive integer.
 Specifies the seed before any randomness based code is being run.
-If <code>NULL</code> the seed will be inherited from the calling environment.</p></dd>
+If <code>NULL</code> no seed is set in the calling environment.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>An integer specifying the level of verbosity. If <code>0</code>, <code>shapr</code> will stay silent.
-If <code>1</code>, it will print information about performance. If <code>2</code>, some additional information will be printed out.
-Use <code>0</code> (default) for no verbosity, <code>1</code> for low verbose, and <code>2</code> for high verbose.
-TODO: Make this clearer when we end up fixing this and if they should force a progressr bar.</p></dd>
+<dd><p>String vector or NULL.
+Specifies the verbosity (printout detail level) through one or more of strings <code>"basic"</code>, <code>"progress"</code>,
+<code>"convergence"</code>, <code>"shapley"</code> and <code>"vS_details"</code>.
+<code>"basic"</code> (default) displays basic information about the computation which is being performed.
+<code>"progress</code> displays information about where in the calculation process the function currently is.
+#' <code>"convergence"</code> displays information on how close to convergence the Shapley value estimates are
+(only when <code>iterative = TRUE</code>) .
+<code>"shapley"</code> displays intermediate Shapley value estimates and standard deviations (only when <code>iterative = TRUE</code>)</p><ul><li><p>the final estimates.
+<code>"vS_details"</code> displays information about the v_S estimates.
+This is most relevant for <code>approach %in% c("regression_separate", "regression_surrogate", "vaeac"</code>).
+<code>NULL</code> means no printout.
+Note that any combination of four strings can be used.
+E.g. <code>verbose = c("basic", "vS_details")</code> will display basic information + details about the v(S)-estimation process.</p></li>
+</ul></dd>
 
 
 <dt id="arg-regression-model">regression.model<a class="anchor" aria-label="anchor" href="#arg-regression-model"></a></dt>
@@ -127,8 +140,8 @@ the values provided in <code>regression.tune_values</code>. Note that no checks 
 The data.frame must contain the possible hyperparameter value combinations to try.
 The column names must match the names of the tuneable parameters specified in <code>regression.model</code>.
 If <code>regression.tune_values</code> is a function, then it should take one argument <code>x</code> which is the training data
-for the current combination/coalition and returns a data.frame/data.table/tibble with the properties described above.
-Using a function allows the hyperparameter values to change based on the size of the combination. See the regression
+for the current coalition and returns a data.frame/data.table/tibble with the properties described above.
+Using a function allows the hyperparameter values to change based on the size of the coalition See the regression
 vignette for several examples.
 Note, to make it easier to call <code><a href="explain.html">explain()</a></code> from Python, the <code>regression.tune_values</code> can also be a string
 containing an R function. For example,
@@ -160,6 +173,10 @@ a valid input. It is essential to include the package prefix if the package is n
 <dd><p>Integer (default is <code>NULL</code>). The number of times each training observations
 has been augmented. If <code>NULL</code>, then we assume that we are doing separate regression.</p></dd>
 
+
+<dt id="arg-current-comb">current_comb<a class="anchor" aria-label="anchor" href="#arg-current-comb"></a></dt>
+<dd><p>Integer vector. The current combination of features, passed to verbosity printing function.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -178,7 +195,7 @@ has been augmented. If <code>NULL</code>, then we assume that we are doing separ
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Nikolai Sellereite, Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Norsk Regnesentral.</p>
+  <p></p><p>Developed by Martin Jullum, Lars Henry Berge Olsen, Annabelle Redelmeier, Jon Lachmann, Nikolai Sellereite, Norsk Regnesentral.</p>
 </div>
 
 <div class="pkgdown">
