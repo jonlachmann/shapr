@@ -4,6 +4,7 @@
 <url><loc>https://norskregnesentral.github.io/shapr/CONTRIBUTING.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/LICENSE-text.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/LICENSE.html</loc></url>
+<url><loc>https://norskregnesentral.github.io/shapr/README_py.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/articles/asymmetric_causal.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/articles/general_usage.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/articles/index.html</loc></url>
@@ -65,6 +66,7 @@
 <url><loc>https://norskregnesentral.github.io/shapr/reference/get_supported_approaches.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/reference/get_supported_models.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/reference/get_valid_causal_coalitions.html</loc></url>
+<url><loc>https://norskregnesentral.github.io/shapr/reference/group_forecast_setup.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/reference/hat_matrix_cpp.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/reference/index.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/reference/inv_gaussian_transform_cpp.html</loc></url>
@@ -170,5 +172,6 @@
 <url><loc>https://norskregnesentral.github.io/shapr/reference/vaeac_update_pretrained_model.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/reference/weight_matrix.html</loc></url>
 <url><loc>https://norskregnesentral.github.io/shapr/reference/weight_matrix_cpp.html</loc></url>
+<url><loc>https://norskregnesentral.github.io/shapr/shaprpy.html</loc></url>
 </urlset>
 
